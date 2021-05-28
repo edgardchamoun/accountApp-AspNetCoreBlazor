@@ -1,0 +1,114 @@
+﻿@page "/accounts"
+@using AccountApp.Shared.Models
+@inject IJSRuntime jsRuntime
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h2>Accounts List</h2>
+
+@if (accountsList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Local Account Number</th>
+                <th>IBAN</th>
+                <th>Bank Name</th>
+                <th>Currency</th>
+                <th>Transactions</th>
+                <th>Balances</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var acc in accountsList)
+            {
+            <tr>
+                <td>@acc.LocalAccountNumber</td>
+                <td>@acc.IBAN</td>
+                <td>@acc.BankName</td>
+                <td>@acc.Currency</td>
+                <td><input type="button" class="btn btn-secondary" value="Transactions" @onclick="@(()=>NavigateTo(acc, "/transactions"))" /></td>
+                <td><input type="button" class="btn btn-secondary" value="Balances" @onclick="@(()=>NavigateTo(acc, "/balances"))" /></td>
+                <td><input type="button" class="btn btn-primary" value="Edit" @onclick="(()=>EditAccount(acc))" /></td>
+                <td><input type="button" class="btn btn-danger" value="Delete" @onclick="(()=>DeleteAccount(acc))" /></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <input type="button" class="btn btn-primary" value="Add Account" @onclick="(()=>NewAccount())" />
+    </div>
+}
+
+<AccountDetail AccountObject="@accountObject" OnSave="@GetAccountsList" IsOpened="@isAccountModalOpened" Title="@accountModalTitle" Currencies="@currencies" />
+
+<ConfirmDelete OnClick="@DeleteAccountAsync" IsOpened="@isDeleteModalOpened" ObjectType="account" ObjectId="@accountObject.LocalAccountNumber"/>
+
+@code {
+    private string[] currencies;
+    private Account[] accountsList;
+    Account accountObject = new Account();
+    string accountModalTitle = string.Empty;
+    bool isAccountModalOpened = false;
+    bool isDeleteModalOpened = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAccountsList();
+        HttpClient localHttpClient = new HttpClient();
+        var builder = Microsoft.AspNetCore.Components.WebAssembly.Hosting.WebAssemblyHostBuilder.CreateDefault(null);
+        localHttpClient.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+        currencies = await localHttpClient.GetFromJsonAsync<string[]>("sample-data/currency.json");
+    }
+
+    private void NewAccount()
+    {
+        accountObject = new Account();
+        accountModalTitle = "Add New Account";
+        isAccountModalOpened = true;
+        if (isDeleteModalOpened)
+            isDeleteModalOpened = false;
+    }
+
+    private void EditAccount(Account account)
+    {
+        accountObject = account;
+        accountModalTitle = "Edit Account";
+        isAccountModalOpened = true;
+        if (isDeleteModalOpened)
+            isDeleteModalOpened = false;
+    }
+    private void DeleteAccount(Account account)
+    {
+        accountObject = account;
+        isDeleteModalOpened = true;
+        if (isAccountModalOpened)
+            isAccountModalOpened = false;
+    }
+
+    private async Task DeleteAccountAsync()
+    {
+        var deletedAccount = await Http.DeleteAsync("Account/Delete?accountId=" + accountObject.AccountId);
+        await GetAccountsList();
+    }
+
+    private async Task GetAccountsList()
+    {
+        accountsList = await Http.GetFromJsonAsync<Account[]>("Account/List");
+        if (isAccountModalOpened)
+            isAccountModalOpened = false;
+        if (isDeleteModalOpened)
+            isDeleteModalOpened = false;
+    }
+
+    private void NavigateTo(Account account, string url)
+    {
+        NavigationManager.NavigateTo("accounts/" + account.AccountId + url, true);
+    }
+}

@@ -1,0 +1,15 @@
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\bin\Release\netcoreapp3.1\AccountApp.Domain.deps.json
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\bin\Release\netcoreapp3.1\AccountApp.Domain.runtimeconfig.json
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\bin\Release\netcoreapp3.1\AccountApp.Domain.runtimeconfig.dev.json
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\bin\Release\netcoreapp3.1\AccountApp.Domain.dll
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\bin\Release\netcoreapp3.1\AccountApp.Domain.pdb
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\bin\Release\netcoreapp3.1\AccountApp.Shared.dll
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\bin\Release\netcoreapp3.1\AccountApp.Shared.pdb
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\obj\Release\netcoreapp3.1\AccountApp.Domain.csprojAssemblyReference.cache
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\obj\Release\netcoreapp3.1\AccountApp.Domain.AssemblyInfoInputs.cache
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\obj\Release\netcoreapp3.1\AccountApp.Domain.AssemblyInfo.cs
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\obj\Release\netcoreapp3.1\AccountApp.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\obj\Release\netcoreapp3.1\AccountApp.Domain.csproj.CopyComplete
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\obj\Release\netcoreapp3.1\AccountApp.Domain.dll
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\obj\Release\netcoreapp3.1\AccountApp.Domain.pdb
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Domain\obj\Release\netcoreapp3.1\AccountApp.Domain.genruntimeconfig.cache

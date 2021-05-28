@@ -1,0 +1,20 @@
+﻿<BlazorModal Title="Delete Confirmation" IsOpened="@IsOpened">
+    <ModalBody>
+        <p>Do you want to delete the @ObjectType @((string.IsNullOrEmpty(ObjectId) ? "" : ObjectId)) ?</p>
+    </ModalBody>
+    <ModalFooter>
+        <button type="button" class="btn btn-primary" @onclick="OnClick">Yes</button>
+        <button type="button" class="btn btn-secondary" @onclick="() => IsOpened = false">Cancel</button>
+    </ModalFooter>
+</BlazorModal>
+
+@code {
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+    [Parameter]
+    public bool IsOpened { get; set; }
+    [Parameter]
+    public string ObjectType { get; set; }
+    [Parameter]
+    public string ObjectId { get; set; }
+}

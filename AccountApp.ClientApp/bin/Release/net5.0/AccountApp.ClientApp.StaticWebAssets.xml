@@ -1,0 +1,4 @@
+﻿<StaticWebAssets Version="1.0">
+  <ContentRoot BasePath="/" Path="C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.ClientApp\bin\Release\net5.0\wwwroot\" />
+  <ContentRoot BasePath="/" Path="C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.ClientApp\obj\Release\net5.0\scopedcss\bundle\" />
+</StaticWebAssets>

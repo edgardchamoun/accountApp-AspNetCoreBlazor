@@ -1,0 +1,72 @@
+﻿@using AccountApp.Shared.Models
+@inject IJSRuntime jsRuntime
+@inject HttpClient Http
+
+<BlazorModal Title="@Title" IsOpened="@IsOpened">
+    <ModalBody>
+        <EditForm id="AccountForm" Model="@AccountObject" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <input type="hidden" @bind-value="@AccountObject.AccountId" />
+                <label for="LocalAccountNumber">Local Account Number</label>
+                <InputText id="LocalAccountNumber" class="form-control" @bind-Value="@AccountObject.LocalAccountNumber" />
+                <ValidationMessage For="@(()=>AccountObject.LocalAccountNumber)"></ValidationMessage>
+            </div>
+            <div class="form-group">
+                <label for="IBAN">IBAN</label>
+                <InputText id="IBAN" class="form-control" @bind-Value="@AccountObject.IBAN" />
+                <ValidationMessage For="@(()=>AccountObject.IBAN)"></ValidationMessage>
+            </div>
+            <div class="form-group">
+                <label for="BankName">Bank Name</label>
+                <InputText id="BankName" class="form-control" @bind-Value="@AccountObject.BankName" />
+                <ValidationMessage For="@(()=>AccountObject.BankName)"></ValidationMessage>
+            </div>
+            <div class="form-group">
+                <label for="Currency">Currency</label>
+                <InputSelect id="Currency" class="form-control" @bind-Value="@AccountObject.Currency">
+                    @if (Currencies != null)
+                    {
+                        foreach (var currency in Currencies)
+                        {
+                            <option>@currency</option>
+                        }
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(()=>AccountObject.Currency)"></ValidationMessage>
+            </div>
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <button type="submit" form="AccountForm" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-secondary" @onclick="() => IsOpened = false">Cancel</button>
+    </ModalFooter>
+</BlazorModal>
+
+@code {
+
+    [Parameter]
+    public Account AccountObject { get; set; }
+    [Parameter]
+    public EventCallback<Account> OnSave { get; set; }
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public bool IsOpened { get; set; }
+    [Parameter]
+    public string[] Currencies { get; set; }
+
+    private async void HandleValidSubmit()
+    {
+        if (AccountObject.AccountId == 0)
+        {
+            await Http.PostAsJsonAsync("Account/Add", AccountObject);
+        }
+        else
+        {
+            await Http.PutAsJsonAsync("Account/Update", AccountObject);
+        }
+
+        await OnSave.InvokeAsync(AccountObject);
+    }
+}

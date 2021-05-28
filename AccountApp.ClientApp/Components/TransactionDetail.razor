@@ -1,0 +1,59 @@
+﻿@using AccountApp.Shared.Models
+@using System.Globalization
+
+@inject IJSRuntime jsRuntime
+@inject HttpClient Http
+
+<BlazorModal Title="@Title" IsOpened="@IsOpened">
+    <ModalBody>
+        <EditForm id="TransactionForm" Model="@TransactionObject" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <input type="hidden" @bind-value="@TransactionObject.AccountId" />
+                <input type="hidden" @bind-value="@TransactionObject.TransactionId" />
+                <label for="TransactionAmount">Amount</label>
+                <InputNumber id="TransactionAmount" class="form-control" @bind-Value="@TransactionObject.TransactionAmount" />
+                <ValidationMessage For="@(()=>TransactionObject.TransactionAmount)"></ValidationMessage>
+            </div>
+            <div class="form-group">
+                <label for="TransactionDate">Date</label>
+                <InputDate id="TransactionDate" class="form-control" @bind-Value="@TransactionObject.TransactionDate" />
+                <ValidationMessage For="@(()=>TransactionObject.TransactionDate)"></ValidationMessage>
+            </div>
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <button type="submit" form="TransactionForm" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-secondary" @onclick="() => IsOpened = false">Cancel</button>
+    </ModalFooter>
+</BlazorModal>
+
+@code {
+
+    [Parameter]
+    public Transaction TransactionObject { get; set; }
+    [Parameter]
+    public EventCallback<Transaction> OnSave { get; set; }
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public bool IsOpened { get; set; }
+    [Parameter]
+    public string AccountId { get; set; }
+
+
+    private async void HandleValidSubmit()
+    {
+        if (TransactionObject.TransactionId == 0)
+        {
+            TransactionObject.AccountId = Convert.ToInt32(AccountId);
+            await Http.PostAsJsonAsync("Account/" + TransactionObject.AccountId + "/Transaction/Add", TransactionObject);
+        }
+        else
+        {
+            await Http.PutAsJsonAsync("Account/" + TransactionObject.AccountId + "/Transaction/Update", TransactionObject);
+        }
+
+        await OnSave.InvokeAsync(TransactionObject);
+    }
+}

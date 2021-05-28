@@ -1,0 +1,44 @@
+﻿@inject NavigationManager NavigationManager;
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">AccountApp</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="@(e => HandleClick("/accounts"))">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Accounts
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="@(e => HandleClick("/transactions"))">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Transactions
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="@(e => HandleClick("/balances"))">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Balances
+            </NavLink>
+        </li>
+    </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void HandleClick(string url)
+    {
+        NavigationManager.NavigateTo(url, true);
+    }
+}

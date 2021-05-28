@@ -1,0 +1,89 @@
+﻿@page "/balances"
+@page "/accounts/{accountId}/balances"
+@using AccountApp.Shared.Models
+@inject IJSRuntime jsRuntime
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Balances List</h3>
+
+@if (accountsList != null)
+{
+    <select @onchange="onChangeAccount" class="form-control col-md-2 dropdownlisting">
+        <option value="" selected>Select Account</option>
+        @foreach (var account in accountsList)
+        {
+            if (accountId == account.AccountId.ToString())
+            {
+                <option value=@account.AccountId selected>@account.LocalAccountNumber</option>
+            }
+            else
+            {
+                <option value=@account.AccountId>@account.LocalAccountNumber</option>
+            }
+        }
+    </select>
+
+    @if (balancesList != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var balance in balancesList)
+            {
+                <tr>
+                    <td>@balance.BalanceAmount</td>
+                    <td>@balance.BalanceDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+}
+
+@code {
+    [Parameter]
+    public string accountId { get; set; }
+
+    private Account[] accountsList;
+    private Balance[] balancesList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAccountsList();
+    }
+
+    private async Task GetAccountsList()
+    {
+        accountsList = await Http.GetFromJsonAsync<Account[]>("Account/List");
+        await GetBalancesListByAccountId();
+    }
+
+    private async Task GetBalancesListByAccountId()
+    {
+        if (!string.IsNullOrEmpty(accountId))
+        {
+            balancesList = await Http.GetFromJsonAsync<Balance[]>("Account/" + accountId + "/Balance/List");
+        }
+    }
+}
+
+@functions {
+    async Task onChangeAccount(ChangeEventArgs e)
+    {
+        if(!string.IsNullOrEmpty(e.Value.ToString()))
+        {
+            accountId = e.Value.ToString();
+            await GetBalancesListByAccountId();
+        }
+        else
+        {
+            balancesList = null;
+        }
+    }
+}

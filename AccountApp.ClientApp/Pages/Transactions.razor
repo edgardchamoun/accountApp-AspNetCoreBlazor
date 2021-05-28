@@ -1,0 +1,141 @@
+﻿@page "/transactions"
+@page "/accounts/{accountId}/transactions"
+@using AccountApp.Shared.Models
+@inject IJSRuntime jsRuntime
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Transactions List</h3>
+
+@if (accountsList != null)
+{
+    <select @onchange="onChangeAccount" class="form-control col-md-2 dropdownlisting">
+        <option value="" selected>Select Account</option>
+        @foreach (var account in accountsList)
+        {
+            if (accountId == account.AccountId.ToString())
+            {
+                <option value=@account.AccountId selected>@account.LocalAccountNumber</option>
+            }
+            else
+            {
+                <option value=@account.AccountId>@account.LocalAccountNumber</option>
+            }
+        }
+    </select>
+
+    @if (transactionsList != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var trx in transactionsList)
+            {
+                <tr>
+                    <td>@trx.TransactionAmount</td>
+                    <td>@trx.TransactionDate</td>
+                    <td><input type="button" class="btn btn-primary" value="Edit" @onclick="(()=>EditTransaction(trx))" /></td>
+                    <td><input type="button" class="btn btn-danger" value="Delete" @onclick="(()=>DeleteTransaction(trx))" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <input type="button" class="btn btn-primary" value="Add Transaction" @onclick="(()=>NewTransaction())" />
+    </div>
+    }
+}
+
+
+
+<TransactionDetail TransactionObject="@transactionObject" OnSave="@GetTransactionsListByAccountId" IsOpened="@isTransactionModalOpened" Title="@transactionModalTitle" AccountId="@accountId" />
+
+<ConfirmDelete OnClick="@DeleteTransaction" IsOpened="@isDeleteModalOpened" ObjectType="transaction" />
+
+@code {
+    [Parameter]
+    public string accountId { get; set; }
+
+    private Account[] accountsList;
+    private Transaction[] transactionsList;
+    Transaction transactionObject = new Transaction();
+    string transactionModalTitle = string.Empty;
+    bool isTransactionModalOpened = false;
+    bool isDeleteModalOpened = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAccountsList();
+    }
+
+    private void NewTransaction()
+    {
+        transactionObject = new Transaction();
+        transactionModalTitle = "Add New Transaction";
+        isTransactionModalOpened = true;
+        if (isDeleteModalOpened)
+            isDeleteModalOpened = false;
+    }
+
+    private void EditTransaction(Transaction transaction)
+    {
+        transactionObject = transaction;
+        transactionModalTitle = "Edit Transaction";
+        isTransactionModalOpened = true;
+        if (isDeleteModalOpened)
+            isDeleteModalOpened = false;
+    }
+    private void DeleteTransaction(Transaction transaction)
+    {
+        transactionObject = transaction;
+        isDeleteModalOpened = true;
+        if (isTransactionModalOpened)
+            isTransactionModalOpened = false;
+    }
+
+    private async Task DeleteTransaction()
+    {
+        var deletedTransaction = await Http.DeleteAsync("Account/" + accountId + "/Transaction/Delete?transactionId=" + transactionObject.TransactionId);
+        await GetTransactionsListByAccountId();
+    }
+
+    private async Task GetAccountsList()
+    {
+        accountsList = await Http.GetFromJsonAsync<Account[]>("Account/List");
+        await GetTransactionsListByAccountId();
+    }
+
+    private async Task GetTransactionsListByAccountId()
+    {
+        if (!string.IsNullOrEmpty(accountId))
+        {
+            transactionsList = await Http.GetFromJsonAsync<Transaction[]>("Account/" + accountId + "/Transaction/List");
+        }
+        if (isTransactionModalOpened)
+            isTransactionModalOpened = false;
+        if (isDeleteModalOpened)
+            isDeleteModalOpened = false;
+    }
+}
+
+@functions {
+    async Task onChangeAccount(ChangeEventArgs e)
+    {
+        if(!string.IsNullOrEmpty(e.Value.ToString()))
+        {
+            accountId = e.Value.ToString();
+            await GetTransactionsListByAccountId();
+        }
+        else
+        {
+            transactionsList = null;
+        }
+    }
+}

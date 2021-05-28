@@ -1,0 +1,17 @@
+C:\Users\Edgard\Source\Repos\AccountApp\Shared\bin\Debug\netcoreapp3.1\AccountApp.Shared.deps.json
+C:\Users\Edgard\Source\Repos\AccountApp\Shared\bin\Debug\netcoreapp3.1\AccountApp.Shared.dll
+C:\Users\Edgard\Source\Repos\AccountApp\Shared\bin\Debug\netcoreapp3.1\AccountApp.Shared.pdb
+C:\Users\Edgard\Source\Repos\AccountApp\Shared\obj\Debug\netcoreapp3.1\AccountApp.Shared.AssemblyInfoInputs.cache
+C:\Users\Edgard\Source\Repos\AccountApp\Shared\obj\Debug\netcoreapp3.1\AccountApp.Shared.AssemblyInfo.cs
+C:\Users\Edgard\Source\Repos\AccountApp\Shared\obj\Debug\netcoreapp3.1\AccountApp.Shared.csproj.CoreCompileInputs.cache
+C:\Users\Edgard\Source\Repos\AccountApp\Shared\obj\Debug\netcoreapp3.1\AccountApp.Shared.dll
+C:\Users\Edgard\Source\Repos\AccountApp\Shared\obj\Debug\netcoreapp3.1\AccountApp.Shared.pdb
+C:\Users\Edgard\Source\Repos\AccountApp\Shared\obj\Debug\netcoreapp3.1\AccountApp.Shared.csprojAssemblyReference.cache
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Shared\bin\Debug\netcoreapp3.1\AccountApp.Shared.deps.json
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Shared\bin\Debug\netcoreapp3.1\AccountApp.Shared.dll
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Shared\bin\Debug\netcoreapp3.1\AccountApp.Shared.pdb
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Shared\obj\Debug\netcoreapp3.1\AccountApp.Shared.AssemblyInfoInputs.cache
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Shared\obj\Debug\netcoreapp3.1\AccountApp.Shared.AssemblyInfo.cs
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Shared\obj\Debug\netcoreapp3.1\AccountApp.Shared.csproj.CoreCompileInputs.cache
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Shared\obj\Debug\netcoreapp3.1\AccountApp.Shared.dll
+C:\Users\Edgard\Source\Repos\AccountApp\AccountApp.Shared\obj\Debug\netcoreapp3.1\AccountApp.Shared.pdb
